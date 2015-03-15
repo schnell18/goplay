@@ -7,6 +7,28 @@ import (
 	"path/filepath"
 )
 
+func main() {
+	if len(os.Args) == 1 {
+		fmt.Printf("Usage: %s <whole-number>\n", filepath.Base(os.Args[0]))
+		os.Exit(1)
+	}
+
+	digits := os.Args[1]
+	for row := range bigDigits[0] {
+		line := ""
+
+		for column := range digits {
+			digit := digits[column] - '0'
+			if digit >= 0 && digit <= 9 {
+				line += bigDigits[digit][row] + "  "
+			} else {
+				log.Fatal("Invalid whole number")
+			}
+		}
+		fmt.Println(line)
+	}
+}
+
 var bigDigits = [][]string{
 	{
 		"  000  ",
@@ -107,26 +129,4 @@ var bigDigits = [][]string{
 		"   9 ",
 		"  9  ",
 	},
-}
-
-func main() {
-	if len(os.Args) == 1 {
-		fmt.Printf("Usage: %s <whole-number>\n", filepath.Base(os.Args[0]))
-		os.Exit(1)
-	}
-
-	digits := os.Args[1]
-	for row := range bigDigits[0] {
-		line := ""
-
-		for column := range digits {
-			digit := digits[column] - '0'
-			if digit >= 0 && digit <= 9 {
-				line += bigDigits[digit][row] + "  "
-			} else {
-				log.Fatal("Invalid whole number")
-			}
-		}
-		fmt.Println(line)
-	}
 }
