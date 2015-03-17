@@ -5,15 +5,29 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 func main() {
+	width := 0
+	printBar := false
+	digits := os.Args[1]
 	if len(os.Args) == 1 {
-		fmt.Printf("Usage: %s <whole-number>\n", filepath.Base(os.Args[0]))
+		usage()
 		os.Exit(1)
+	} else if len(os.Args) == 3 {
+		if os.Args[1] == "-b" || os.Args[1] == "--bar" {
+			printBar = true
+			digits = os.Args[2]
+		} else {
+			usage()
+			os.Exit(1)
+		}
+	} else if len(os.Args) == 2 && (os.Args[1] == "--help" || os.Args[1] == "-h") {
+		usage()
+		os.Exit(0)
 	}
 
-	digits := os.Args[1]
 	for row := range bigDigits[0] {
 		line := ""
 
@@ -25,8 +39,21 @@ func main() {
 				log.Fatal("Invalid whole number")
 			}
 		}
+		width = len(line)
+		if row == 0 && printBar {
+			fmt.Println(strings.Repeat("*", width))
+		}
 		fmt.Println(line)
 	}
+	if printBar {
+		fmt.Println(strings.Repeat("*", width))
+	}
+}
+
+func usage() {
+	fmt.Printf("Usage: %s [-b|--bar] <whole-number>\n", filepath.Base(os.Args[0]))
+	fmt.Println("-b --bar   draw an underbar and an overbar")
+	fmt.Println("-h --help  show usage and exit")
 }
 
 var bigDigits = [][]string{
@@ -61,13 +88,13 @@ var bigDigits = [][]string{
 	},
 
 	{
-		"  333 ",
-		" 3   3",
-		"     3",
-		"   33 ",
-		"     3",
-		" 3   3",
-		"  333 ",
+		" 333 ",
+		"3   3",
+		"    3",
+		"  33 ",
+		"    3",
+		"3   3",
+		" 333 ",
 	},
 
 	{
@@ -91,13 +118,13 @@ var bigDigits = [][]string{
 	},
 
 	{
-		"     6 ",
-		"    6  ",
-		"   6   ",
-		"  6  6 ",
-		" 6    6",
-		" 6    6",
-		"  6666 ",
+		"  666 ",
+		" 6    ",
+		" 6    ",
+		" 6666 ",
+		" 6   6",
+		" 6   6",
+		"  666 ",
 	},
 
 	{
@@ -111,13 +138,13 @@ var bigDigits = [][]string{
 	},
 
 	{
-		" 88888 ",
-		"8     8",
-		" 8   8 ",
-		"   8   ",
-		" 8   8 ",
-		"8     8",
-		" 88888 ",
+		" 888 ",
+		"8   8",
+		"8   8",
+		" 888 ",
+		"8   8",
+		"8   8",
+		" 888 ",
 	},
 
 	{
